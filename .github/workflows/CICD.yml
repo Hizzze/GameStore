@@ -61,11 +61,8 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           script: |
             cd ${{ env.DEPLOY_PATH }}
-            # Удаляем все php файлы кроме wp-config.php
             find . -maxdepth 1 -type f -name "*.php" ! -name "wp-config.php" -delete
-            # Удаляем старые core директории
             rm -rf wp-admin wp-includes
-            # Распаковываем WordPress core
             unzip -o wordpress.zip -d temp-wordpress
             mv temp-wordpress/* ./
             rm -rf temp-wordpress
