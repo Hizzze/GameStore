@@ -75,9 +75,15 @@ jobs:
           password: ${{ secrets.SERVER_SSH_PASSWORD }}
           port: ${{ secrets.SERVER_PORT }}
           script: |
-            cd ${{ env.DEPLOY_PATH }}/wp-content
-            rm -rf plugins mu-plugins themes
-            unzip -o ../wpcontent.zip -d ./
+            cd ${{ env.DEPLOY_PATH }}
+            # Проверим, что zip на месте
+            ls -lah
+            # Если wp-content уже существует — удаляем старые каталоги
+            if [ -d "wp-content" ]; then
+              rm -rf wp-content/plugins wp-content/mu-plugins wp-content/themes
+            fi
+            # Распаковываем wpcontent.zip прямо в wp-content
+            unzip -o wpcontent.zip -d wp-content
 
       - name: Disable Maintenance Mode
         uses: appleboy/ssh-action@master
